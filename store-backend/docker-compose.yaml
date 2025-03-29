@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0                 # ใช้ MySQL เวอร์ชัน 8
+    container_name: mysql  # ชื่อตั้งเอง (จะใช้ตอน docker ps)
+    restart: always                 # ให้ restart container อัตโนมัติเมื่อมีปัญหา
+    environment:
+      MYSQL_ROOT_PASSWORD: root123  # รหัสผ่าน root
+      MYSQL_DATABASE: store        # ชื่อ database เริ่มต้น
+      MYSQL_USER: devuser              # สร้าง user เพิ่ม
+      MYSQL_PASSWORD: devpass          # รหัสผ่านของ user
+    ports:
+      - "3306:3306"                   # ให้สามารถเข้าถึงจาก localhost
+    volumes:
+      - mysql_data:/var/lib/mysql     # ผูกกับ volume เพื่อให้ข้อมูลไม่หาย
+
+volumes:
+  mysql_data:
