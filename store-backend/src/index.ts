@@ -1,5 +1,8 @@
 import express from "express";
 import cors from "cors";
+
+import loadFixtures from './fixtures'
+import appConfig from './config'
 import apiRouter from './api'
 
 const app = express();
@@ -14,3 +17,4 @@ app.listen(8000, () => {
   console.log("Server is running on port 8000");
 });
 
+loadFixtures(appConfig.clearDataBeforeLodingFixture)
