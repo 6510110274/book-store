@@ -15,4 +15,15 @@ export class CategoryRepository implements IRepository<Category> {
             return null;
         }
     }
+
+    async get(id: string | number): Promise<Category | null> {
+        try {
+            const response = await axios.get<Category>(`${this.urlPrefix}/category/${id}`);
+            return response.data;
+        } catch (error) {
+            console.error(`Error fetching category with id ${id}:`, error);
+            return null;
+        }
+    }
+
 }
