@@ -1,6 +1,6 @@
 import knex from 'knex'
 import appConfig from './config';
-const knexStringcase = require('knex-stringcase');
+import knexStringcase from 'knex-stringcase'; 
 
 const db = knex(knexStringcase({
   client: 'mysql2',

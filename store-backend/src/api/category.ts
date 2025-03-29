@@ -13,8 +13,9 @@ router
         ])
     })
     .get('/db', async (req, res) => {
-        req.body = await db('category').select('*').orderBy('id')
+        const data = await db('category').select('*').orderBy('id')
         console.log(req.body)
+        res.json(data) 
     })
 
 export default router
