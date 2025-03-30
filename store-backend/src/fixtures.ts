@@ -32,7 +32,7 @@ async function loadFixtures(clearData = false) {
   await db.batchInsert('book', [
     { id: 1, title: 'Harry Potter', price: 560, stock_amount: 10, category_id: 1, author_id: 1, publisher_id: 1 },
     { id: 2, title: 'Game of Thrones', price: 520, stock_amount: 6, category_id: 1, author_id: 2, publisher_id: 2 },
-    { id: 3, title: 'Node js', price: 300, stock_amount: 4, category_id: 2, author_id: 3, publisher_id: 1 },
+    { id: 3, title: 'Node.js', price: 300, stock_amount: 4, category_id: 2, author_id: 3, publisher_id: 1 },
   ])
 }
 
