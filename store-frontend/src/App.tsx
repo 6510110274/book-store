@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import Category from "./models/Category";
 import Repo from './repositories'
+import BookDetail from "./components/BookDetial";
 
 function App() {
   const [categoryList, setCategoryList] = useState<Category[]>([]);
@@ -74,6 +75,10 @@ function App() {
       <button onClick={handleCreate}>Create</button>
       <button onClick={handleUpdate}>Update</button>
       <button onClick={handleDelete}>Delete</button>
+
+      <hr />
+      <h2>Book List</h2>
+      <BookDetail/>
     </div>
   );
 }
