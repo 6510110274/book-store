@@ -9,7 +9,6 @@ const findById = (id: number) => makeQuery().where({id})
 router
     .get('/', async (req, res) => {
         const data = await makeQuery().orderBy('id')
-        console.log(req.body)
         res.json(data) 
     })
     .get('/:id', async (req, res) => {
