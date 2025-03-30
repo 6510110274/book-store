@@ -2,7 +2,7 @@
 exports.up = function(knex) {
     return knex.schema
       .createTable('category', function (table) {
-        table.integer('id').unsigned().primary(); // ใช้ integer ธรรมดา เพราะคุณใส่ id เอง
+        table.increments('id').unsigned().primary(); // ใช้ integer ธรรมดา เพราะคุณใส่ id เอง
         table.string('title', 100).notNullable();
       })
   };
