@@ -1,4 +1,7 @@
 import Category from "./Category";
+import Author from "./Author";
+import Publisher from "./Publisher";
+// Book model interface
 
 export default interface Book {
     id: number;
@@ -6,6 +9,6 @@ export default interface Book {
     price: number;
     stockAmount: number;
     category: Partial<Category>;
-    author: { id: number; name: string };
-    publisher: { id: number; name: string };
+    author: Partial<Author>;
+    publisher: Partial<Publisher>;
 }

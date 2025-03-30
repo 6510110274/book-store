@@ -1,4 +1,4 @@
-export default interface Category {
+export default interface Author {
     id: number;
     title: string;
   }
