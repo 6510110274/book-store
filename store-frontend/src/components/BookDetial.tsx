@@ -7,7 +7,7 @@ function BookDetail() {
   const [loading, setLoading] = useState(true);
 
   const fetchBooks = async () => {
-    const result = await Repo.books.getAll(undefined);
+    const result = await Repo.books.getAll();
     if (result) {
       setBooks(result);
     }
