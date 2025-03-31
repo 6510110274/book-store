@@ -1,12 +1,21 @@
 import { useState, useEffect } from "react";
 import Category from "./models/Category";
-import Repo from './repositories'
+import Book from "./models/Book";
+import Repo from './repositories';
 import BookDetail from "./components/BookDetial";
+import BookForm from "./components/BookForm";
 
 function App() {
   const [categoryList, setCategoryList] = useState<Category[]>([]);
-  const [title, setTitle] = useState('');
-  const [id, setId] = useState<number | ''>('');
+  const [bookList, setBookList] = useState<Book[]>([]);
+  const [filter, setFilter] = useState<{ categoryId?: number }>({});
+
+  const fetchBookList = async () => {
+    const result = await Repo.books.getAll(filter);
+    if (result) {
+      setBookList(result);
+    }
+  };
 
   const fetchCategoryList = async () => {
     const result = await Repo.categories.getAll();
@@ -15,70 +24,68 @@ function App() {
     }
   };
 
+  const onCreateBook = async (book: Partial<Book>) => {
+    await Repo.books.create(book);
+    fetchBookList();
+  };
+
+  const onUpdateBook = async (book: Partial<Book>) => {
+    await Repo.books.update(book);
+    fetchBookList();
+  };
+
+  const onDeleteBook = async (id: number) => {
+    await Repo.books.delete(id);
+    fetchBookList();
+  };
+
   useEffect(() => {
     fetchCategoryList();
-  }, []);
+    fetchBookList();
+  }, [filter]);
 
-  const handleCreate = async () => {
-    if (!title) return alert("Title is required");
-    await Repo.categories.create({ title });
-    setTitle('');
-    fetchCategoryList();
-  };
-
-  const handleUpdate = async () => {
-    if (!id || !title) return alert("ID and title are required");
-    await Repo.categories.update({id, title });
-    setId('');
-    setTitle('');
-    fetchCategoryList();
-  };
-
-  const handleDelete = async () => {
-    if (!id) return alert("ID is required");
-    await Repo.categories.delete(id);
-    setId('');
-    setTitle('');
-    fetchCategoryList();
+  // 🆕 Handler สำหรับ select filter
+  const handleCategoryFilterChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const selectedCategoryId = Number(e.target.value);
+    if (selectedCategoryId === 0) {
+      setFilter({}); // แสดงทั้งหมด
+    } else {
+      setFilter({ categoryId: selectedCategoryId });
+    }
   };
 
   return (
     <div style={{ padding: '20px' }}>
-      <h1>Category List</h1>
-
-      <ul>
-        {categoryList.map(category => (
-          <li key={category.id}>{category.id}. {category.title}</li>
-        ))}
-      </ul>
-
-      <hr />
-
-      <h2>Manage Category</h2>
-
-      <input
-        type="number"
-        placeholder="ID (for update/delete)"
-        value={id}
-        onChange={e => setId(e.target.value === '' ? '' : parseInt(e.target.value))}
-      />
-      <br />
-
-      <input
-        type="text"
-        placeholder="Title"
-        value={title}
-        onChange={e => setTitle(e.target.value)}
-      />
-      <br /><br />
-
-      <button onClick={handleCreate}>Create</button>
-      <button onClick={handleUpdate}>Update</button>
-      <button onClick={handleDelete}>Delete</button>
-
-      <hr />
       <h2>Book List</h2>
-      <BookDetail/>
+
+      {/* 🆕 ส่วนของ Filter */}
+      <div style={{ marginBottom: '16px' }}>
+        <label>Filter by Category: </label>
+        <select onChange={handleCategoryFilterChange}>
+          <option value={0}>All Categories</option>
+          {categoryList.map(category => (
+            <option key={category.id} value={category.id}>
+              {category.title}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      {/* รายการหนังสือ */}
+      {bookList.map(book => (
+        <div key={book.id}>
+          <BookDetail {...book} />
+          <BookForm
+            book={book}
+            categoryList={categoryList}
+            authorList={[]} 
+            publisherList={[]}
+            callbackFn={onUpdateBook}
+          />
+          <button onClick={() => onDeleteBook(book.id)}>Delete</button>
+          <hr />
+        </div>
+      ))}
     </div>
   );
 }
