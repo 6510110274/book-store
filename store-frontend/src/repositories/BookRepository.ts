@@ -25,7 +25,7 @@ export class BookRepository implements IRepository<Book> {
         }
     }
 
-    async create(entity: Book): Promise<void> {
+    async create(entity: Partial<Book>): Promise<void> {
         try {
             await axios.post(`${this.urlPrefix}/book`, entity);
         } catch (error) {
